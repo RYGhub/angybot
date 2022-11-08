@@ -8,7 +8,7 @@ RUN apt-get upgrade -y
 RUN apt-get install -y libopus-dev
 
 FROM system AS ytdlp
-RUN wget "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux" --output-file=/usr/bin/yt-dlp
+RUN wget "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux" --output-document=/usr/bin/yt-dlp
 RUN chmod a+x /usr/bin/yt-dlp
 
 FROM ytdlp AS install
