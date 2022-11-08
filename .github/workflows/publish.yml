@@ -6,9 +6,6 @@ on:
       - "v*"
 
 jobs:
-  check:
-    uses: "./.github/workflows/check.yml"
-
   publish-docker:
     name: "Build and publish Docker image on ghcr.io"
     runs-on: ubuntu-latest
