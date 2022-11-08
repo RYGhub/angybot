@@ -4,12 +4,11 @@
 /// An error that occurred in the bot.
 #[derive(Debug)]
 pub enum AngyError {
-    SerenityError(serenity::Error),
-    SongbirdConnectionError(songbird::error::ConnectionError),
-    SongbirdJoinError(songbird::error::JoinError),
-    SongbirdTrackError(songbird::error::TrackError),
-    UserError(&'static str),
-    BotError(&'static str),
+    Serenity(serenity::Error),
+    Songbird(songbird::error::JoinError),
+    Ytdl(songbird::input::error::Error),
+    User(&'static str),
+    Bot(&'static str),
 }
 
 

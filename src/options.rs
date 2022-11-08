@@ -23,7 +23,7 @@ pub fn options_hashmap(options: Vec<CommandDataOption>) -> OptionsHashMap {
 
 
 fn option_required<'hm>(hashmap: &'hm OptionsHashMap, name: &str) -> AngyResult<&'hm CommandDataOptionValue> {
-    hashmap.get(name).ok_or(AngyError::UserError("A required option is missing."))
+    hashmap.get(name).ok_or(AngyError::User("A required option is missing."))
 }
 
 fn option_optional<'hm>(hashmap: &'hm OptionsHashMap, name: &str) -> Option<&'hm CommandDataOptionValue> {

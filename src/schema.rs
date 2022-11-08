@@ -14,9 +14,9 @@ pub async fn register_commands(ctx: &Context) -> AngyResult<()> {
     let guild: GuildId = guild.into();
 
     debug!("Deleting old commands...");
-    for command in guild.get_application_commands(&ctx.http).await.map_err(AngyError::SerenityError)? {
+    for command in guild.get_application_commands(&ctx.http).await.map_err(AngyError::Serenity)? {
         trace!("Deleting /{}...", command.name);
-        guild.delete_application_command(&ctx.http, command.id).await.map_err(AngyError::SerenityError)?;
+        guild.delete_application_command(&ctx.http, command.id).await.map_err(AngyError::Serenity)?;
         trace!("Deleted /{}!", command.name);
     }
     debug!("Deleted old commands successfully!");
@@ -26,30 +26,34 @@ pub async fn register_commands(ctx: &Context) -> AngyResult<()> {
     trace!("Creating /summon...");
     guild.create_application_command(&ctx.http, |c| c
         .name("summon")
-        .description("Summon the bot to a voice channel.")
+        .description("Move the bot to a voice channel.")
         .create_option(|o| o
             .kind(CommandOptionType::Channel)
             .channel_types(&[ChannelType::Voice])
             .name("channel")
-            .description("The channel the bot should be summoned to.")
+            .description("The channel the bot should be move to.")
             .required(true)
         )
-    ).await.map_err(AngyError::SerenityError)?;
+    ).await.map_err(AngyError::Serenity)?;
     trace!("Created /summon!");
 
     trace!("Creating /play...");
     guild.create_application_command(&ctx.http, |c| c
         .name("play")
-        .description("Play something in voice chat.")
+        .description("Play something, overriding anything that is currently being played.")
         .create_option(|o| o
-            .kind(CommandOptionType::String)
-            .name("what")
-            .description("What should be played.")
-            .required(true)
+            // .kind(CommandOptionType::SubCommand)
+            // .name("ytdl")
+            // .description("From YouTube or another website supported by yt-dlp.")
+            // .create_sub_option(|o| o
+                .kind(CommandOptionType::String)
+                .name("what")
+                .description("The URL of the audio to play.")
+                .required(true)
+            // )
         )
-    ).await.map_err(AngyError::SerenityError)?;
+    ).await.map_err(AngyError::Serenity)?;
     trace!("Created /play!");
 
-    debug!("Commands registered successfully!");
     Ok(())
 }

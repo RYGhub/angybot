@@ -5,12 +5,11 @@ mod schema;
 mod error;
 mod options;
 mod handler;
-mod music;
+mod config;
 
 extern crate pretty_env_logger;
 #[macro_use] extern crate log;
 
-use std::env;
 use serenity::Client;
 use serenity::prelude::GatewayIntents;
 use songbird::SerenityInit;
@@ -20,18 +19,9 @@ use songbird::SerenityInit;
 async fn main() {
     pretty_env_logger::init();
 
-    check_envvars();
-
-    let token = env::var("ANGY_TOKEN")
-        .expect("ANGY_TOKEN to be set");
-    let appid = env::var("ANGY_APPID")
-        .expect("ANGY_APPID to be set")
-        .parse::<u64>()
-        .expect("ANGY_APPID to be a valid u64");
-
-    Client::builder(&token, GatewayIntents::non_privileged())
+    Client::builder(&config::TOKEN.as_str(), GatewayIntents::non_privileged())
         .event_handler(handler::AngyHandler)
-        .application_id(appid)
+        .application_id(*config::APPID)
         .register_songbird()
         .await
         .expect("to be able to create the Discord client")
