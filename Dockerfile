@@ -6,6 +6,7 @@ FROM files AS system
 RUN apt-get update -y
 RUN apt-get upgrade -y
 RUN apt-get install -y libopus-dev
+RUN apt-get install -y ffmpeg
 
 FROM system AS ytdlp
 RUN wget "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux" --output-document=/usr/bin/yt-dlp
