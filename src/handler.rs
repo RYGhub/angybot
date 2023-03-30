@@ -101,11 +101,11 @@ async fn play(ctx: &Context, guild: &GuildId, member: &Member, opts: OptionsHash
     debug!("Creating audio source...");
     let audio =
         // play ytdl
-        if let Some(_) = option_optional_string(&opts, "ytdl") {
+        if option_optional_string(&opts, "ytdl").is_some() {
             songbird::ytdl(what).await.map_err(AngyError::Ffmpeg)?
         }
         // play file
-        else if let Some(_) = option_optional_string(&opts, "file") {
+        else if option_optional_string(&opts, "file").is_some() {
             let dev_user_id: UserId = env::var("ANGY_DEV_USER_ID")
                 .map_err(|_| AngyError::Bot("`ANGY_DEV_USER_ID` is not set."))?
                 .parse::<u64>()
@@ -122,11 +122,13 @@ async fn play(ctx: &Context, guild: &GuildId, member: &Member, opts: OptionsHash
             Err(AngyError::User("Unknown subcommand."))?
         };
 
+    let track_name = audio.metadata.track.clone().unwrap_or("*unknown track*".to_string());
+
     debug!("Playing audio source: {:#?}", &audio.metadata);
     bird.stop();
     bird.play_only_source(audio);
 
-    Ok(format!("️:arrow_forward: Now playing: {}", &what))
+    Ok(format!("️:arrow_forward: Now playing: **{}**", &track_name))
 }
 
 async fn unknown(_ctx: &Context, name: &str, _guild: &GuildId, _member: &Member, _opts: OptionsHashMap) -> AngyResult<String> {
