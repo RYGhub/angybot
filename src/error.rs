@@ -7,6 +7,7 @@ pub enum AngyError {
     Serenity(serenity::Error),
     Songbird(songbird::error::JoinError),
     Ytdl(songbird::input::error::Error),
+    Ffmpeg(songbird::input::error::Error),
     User(&'static str),
     Bot(&'static str),
 }

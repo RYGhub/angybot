@@ -14,11 +14,25 @@ use crate::error::{AngyError, AngyResult};
 pub type OptionsHashMap = HashMap<String, CommandDataOptionValue>;
 
 
+pub fn options_vec(options: Vec<CommandDataOption>) -> Vec<(String, CommandDataOptionValue)> {
+    options.into_iter().map(|o| match o.resolved {
+        Some(oo) => {
+            vec![(o.name, oo)]
+        },
+        None => {
+            let mut vec = vec![(o.name.clone(), CommandDataOptionValue::String(o.name.clone()))];
+            vec.append(&mut options_vec(o.options));
+            vec
+        },
+    }).flatten().collect()
+}
+
+
 /// Convert a [`Vec`] of [`CommandDataOption`] in a more manageable [`HashMap`] mapping option names to resolved values.
 ///
 /// Optional values won't be present in the final [`HashMap`].
 pub fn options_hashmap(options: Vec<CommandDataOption>) -> OptionsHashMap {
-    options.into_iter().filter(|o| o.resolved.is_some()).map(|o| (o.name, o.resolved.unwrap())).collect()
+    options_vec(options).into_iter().collect()
 }
 
 

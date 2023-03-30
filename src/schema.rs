@@ -42,15 +42,26 @@ pub async fn register_commands(ctx: &Context) -> AngyResult<()> {
         .name("play")
         .description("Play something, overriding anything that is currently being played.")
         .create_option(|o| o
-            // .kind(CommandOptionType::SubCommand)
-            // .name("ytdl")
-            // .description("From YouTube or another website supported by yt-dlp.")
-            // .create_sub_option(|o| o
+            .kind(CommandOptionType::SubCommand)
+            .name("ytdl")
+            .description("From YouTube or another website supported by yt-dlp.")
+            .create_sub_option(|o| o
                 .kind(CommandOptionType::String)
                 .name("what")
                 .description("The URL of the audio to play.")
                 .required(true)
-            // )
+            )
+        )
+        .create_option(|o| o
+            .kind(CommandOptionType::SubCommand)
+            .name("file")
+            .description("From a file on the local computer.")
+            .create_sub_option(|o| o
+                .kind(CommandOptionType::String)
+                .name("what")
+                .description("The path of the audio to play.")
+                .required(true)
+            )
         )
     ).await.map_err(AngyError::Serenity)?;
     trace!("Created /play!");
