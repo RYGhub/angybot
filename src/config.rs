@@ -12,4 +12,10 @@ lazy_static! {
         .expect("ANGY_APPID to be set")
         .parse::<u64>()
         .expect("ANGY_APPID to be a valid u64");
+
+    /// The Discord application id to use.
+    pub static ref PLEX: u64 = env::var("ANGY_PLEX")
+        .expect("ANGY_APPID to be set")
+        .parse::<u64>()
+        .expect("ANGY_APPID to be a valid u64");
 }
