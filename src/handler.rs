@@ -45,6 +45,7 @@ impl EventHandler for AngyHandler {
                 let result = match *cmd_name {
                     "summon" => summon(&ctx, cmd_guild, cmd_member, cmd_opts).await,
                     "play" => play(&ctx, cmd_guild, cmd_member, cmd_opts).await,
+                    "stop" => stop(&ctx, cmd_guild, cmd_member, cmd_opts).await,
                     _ => unknown(&ctx, cmd_name, cmd_guild, cmd_member, cmd_opts).await,
                 };
 
@@ -129,6 +130,17 @@ async fn play(ctx: &Context, guild: &GuildId, member: &Member, opts: OptionsHash
     bird.play_only_source(audio);
 
     Ok(format!("️:arrow_forward: Now playing: **{}**", &track_name))
+}
+
+async fn stop(ctx: &Context, guild: &GuildId, member: &Member, opts: OptionsHashMap) -> AngyResult<String> {
+
+    let nest = songbird::get(ctx).await.expect("songbird to be registered on the client");
+    let bird = nest.get(*guild).ok_or(AngyError::User("Not connected to voice."))?;
+    let mut bird = bird.lock().await;
+
+    bird.stop();
+
+    Ok(format!(":stop_button: Stopped playing current track."))
 }
 
 async fn unknown(_ctx: &Context, name: &str, _guild: &GuildId, _member: &Member, _opts: OptionsHashMap) -> AngyResult<String> {

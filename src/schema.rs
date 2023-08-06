@@ -66,5 +66,12 @@ pub async fn register_commands(ctx: &Context) -> AngyResult<()> {
     ).await.map_err(AngyError::Serenity)?;
     trace!("Created /play!");
 
+    trace!("Creating /stop...");
+    guild.create_application_command(&ctx.http, |c| c
+        .name("stop")
+        .description("Immediately stop playing the current track.")
+    ).await.map_err(AngyError::Serenity)?;
+    trace!("Created /stop!");
+
     Ok(())
 }
