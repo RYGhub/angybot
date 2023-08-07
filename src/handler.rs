@@ -129,13 +129,19 @@ async fn play(ctx: &Context, guild: &GuildId, member: &Member, opts: OptionsHash
             Err(AngyError::User("Unknown subcommand."))?
         };
 
-    let track_name = audio.metadata.track.clone().unwrap_or("*unknown track*".to_string());
+    let track_name = audio.metadata.track.clone().or_else(|| audio.metadata.title.clone()).unwrap_or("*unknown track*".to_string());
+    let track_url = audio.metadata.source_url.clone();
 
-    debug!("Playing audio source: {:#?}", &audio.metadata);
+    let track_text = match track_url {
+        None => track_name,
+        Some(track_url) => format!("[{track_name}](<{track_url}>)"),
+    };
+
+    debug!("Playing audio source: {}", &track_text);
     bird.stop();
     bird.play_only_source(audio);
 
-    Ok(format!("️:arrow_forward: Now playing: **{}**", &track_name))
+    Ok(format!("️:arrow_forward: Now playing: **{}**", &track_text))
 }
 
 async fn stop(ctx: &Context, guild: &GuildId, member: &Member, opts: OptionsHashMap) -> AngyResult<String> {
