@@ -103,7 +103,13 @@ async fn play(ctx: &Context, guild: &GuildId, member: &Member, opts: OptionsHash
     let audio =
         // play ytdl
         if option_optional_string(&opts, "ytdl").is_some() {
-            songbird::ytdl(what).await.map_err(AngyError::Ffmpeg)?
+            if what.starts_with("http://") || what.starts_with("https://") {
+                songbird::ytdl(what).await.map_err(AngyError::Ffmpeg)?
+            }
+            else {
+                let what = format!("ytsearch:{what}");
+                songbird::ytdl(what).await.map_err(AngyError::Ffmpeg)?
+            }
         }
         // play file
         else if option_optional_string(&opts, "file").is_some() {
