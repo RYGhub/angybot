@@ -63,6 +63,17 @@ pub async fn register_commands(ctx: &Context) -> AngyResult<()> {
                 .required(true)
             )
         )
+        .create_option(|o| o
+            .kind(CommandOptionType::SubCommand)
+            .name("plex")
+            .description("From the configured Plex media library.")
+            .create_sub_option(|o| o
+                .kind(CommandOptionType::String)
+                .name("what")
+                .description("The query to search on the configured Plex media library.")
+                .required(true)
+            )
+        )
     ).await.map_err(AngyError::Serenity)?;
     trace!("Created /play!");
 
