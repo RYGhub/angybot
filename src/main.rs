@@ -6,6 +6,7 @@ mod error;
 mod options;
 mod handler;
 mod config;
+mod plex;
 
 extern crate pretty_env_logger;
 #[macro_use] extern crate log;

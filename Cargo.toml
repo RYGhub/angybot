@@ -13,8 +13,14 @@ categories = ["command-line-utilities"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-quick-xml = { version = "0.30.0", features = ["overlapped-lists", "serialize", "async-tokio", "encoding"] }
-reqwest = "^0.11.20"
+
+[dependencies.serde]
+version = "^1.0.188"
+features = ["derive"]
+
+[dependencies.reqwest]
+version = "^0.11.20"
+features = ["json"]
 
 [dependencies.serenity]
 version = "~0.11.5"

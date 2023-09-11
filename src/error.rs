@@ -8,6 +8,8 @@ pub enum AngyError {
     Songbird(songbird::error::JoinError),
     Ytdl(songbird::input::error::Error),
     Ffmpeg(songbird::input::error::Error),
+    PlexRequest(reqwest::Error),
+    PlexResponse(&'static str),
     User(&'static str),
     Bot(&'static str),
 }
