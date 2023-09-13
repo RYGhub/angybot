@@ -10,5 +10,5 @@ pub async fn stop(ctx: &Context, guild: &GuildId) -> AngyResult<String> {
 
 	bird.stop();
 
-	Ok(format!(":stop_button: Stopped playing current track."))
+	Ok(":stop_button: Stopped playing current track.".to_string())
 }
