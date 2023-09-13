@@ -41,7 +41,7 @@ features = [
 ]
 
 [dependencies.songbird]
-version = "~0.3.0"
+version = "^0.3.2"
 features = [
     "serenity-rustls",
     "yt-dlp",
