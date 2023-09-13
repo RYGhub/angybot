@@ -62,7 +62,9 @@ impl EventHandler for AngyHandler {
                     .content(content)
                 ).await.expect("to be able to update the deferred response");
             }
-            _ => {}
+            _ => {
+                warn!("Received unknown interaction, ignoring");
+            }
         }
     }
 }
