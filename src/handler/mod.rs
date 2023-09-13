@@ -1,4 +1,4 @@
-//! Module defining the [`EventHandler`] of the bot, [`AngyHandler`].
+//! The [`EventHandler`] of the bot, [`AngyHandler`].
 
 use std::env;
 use std::ffi::OsString;
