@@ -1,4 +1,4 @@
-//! This module contains minimal structs to allow [`serde`] to [`Deserialize`](serde::Deserialize) responses from the Plex private API.
+//! Minimal structs to allow [`serde`] to [`Deserialize`](serde::Deserialize) responses from the Plex private API.
 
 #![allow(missing_docs)]
 
