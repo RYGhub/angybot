@@ -45,9 +45,14 @@ pub async fn play(ctx: &Context, guild: &GuildId, member: &Member, opts: Options
 			let library = crate::config::PLEX_LIBRARY.clone();
 			let client = reqwest::Client::new();
 
-			let response = client.get(
-				format!("{base_url}/hubs/search/?X-Plex-Token={token}&query={what}&limit=25&includeCollections=0&includeExternalMedia=0")
-			)
+			let response = client.get(format!("{base_url}/hubs/search/"))
+				.query(&[
+					("X-Plex-Token", token),
+					("query", what.to_string()),
+					("limit", "25".to_string()),
+					("includeCollections", "0".to_string()),
+					("includeExternalMedia", "0".to_string()),
+				])
 				.header("Accept", "application/json")
 				.send()
 				.await
