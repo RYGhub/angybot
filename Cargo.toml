@@ -1,6 +1,6 @@
 [package]
 name = "angybot"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Stefano Pigozzi <ste.pigozzi@gmail.com>"]
 edition = "2021"
 description = "A Discord bot for playing back music in funny ways"
