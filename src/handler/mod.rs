@@ -5,10 +5,8 @@ mod commands;
 use serenity::client::{Context, EventHandler};
 use serenity::model::application::interaction::{Interaction, InteractionResponseType};
 use serenity::model::gateway::Ready;
-use serenity::model::guild::Member;
-use serenity::model::id::GuildId;
-use crate::error::{AngyError, AngyResult};
-use crate::options::{options_hashmap, OptionsHashMap};
+use crate::error::AngyError;
+use crate::options::options_hashmap;
 use crate::schema;
 
 
