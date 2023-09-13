@@ -1,5 +1,8 @@
-use serde::Deserialize;
+//! This module contains minimal structs to allow [`serde`] to [`Deserialize`](serde::Deserialize) responses from the Plex private API.
 
+#![allow(missing_docs)]
+
+use serde::Deserialize;
 
 #[derive(Clone, Debug, Default, Deserialize)]
 #[non_exhaustive]
