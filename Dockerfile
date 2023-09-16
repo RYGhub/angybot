@@ -4,7 +4,7 @@ ARG TARGETPLATFORM
 
 RUN apt-get update --assume-yes &&  \
     apt-get upgrade --assume-yes &&  \
-    apt-get install --assume-yes libopus-dev ffmpeg
+    apt-get install --assume-yes libopus-dev openssl-dev ffmpeg
 
 RUN \
     mkdir .cargo && \
