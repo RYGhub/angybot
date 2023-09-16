@@ -3,8 +3,7 @@ ARG BUILDPLATFORM
 ARG TARGETPLATFORM
 
 RUN apt-get update --assume-yes &&  \
-    apt-get upgrade --assume-yes &&  \
-    apt-get install --assume-yes libopus-dev libssl-dev ffmpeg
+    apt-get upgrade --assume-yes
 
 RUN \
     mkdir .cargo && \
@@ -47,17 +46,35 @@ RUN \
 WORKDIR /usr/src/angybot/
 COPY ./ ./
 
+# The hack levels are increasing
 RUN \
     if [ "${TARGETPLATFORM}" = "linux/amd64" ]; then \
         RUSTTARGET=x86_64-unknown-linux-gnu; \
+        export TARGET_CC=/usr/bin/x86-64-linux-gnu-gcc; \
+        export TARGET_AR=/usr/bin/x86-64-linux-gnu-ar; \
     fi && \
     if [ "${TARGETPLATFORM}" = "linux/arm64" ]; then \
         RUSTTARGET=aarch64-unknown-linux-gnu; \
+        export TARGET_CC=/usr/bin/aarch64-linux-gnu-gcc; \
+        export TARGET_AR=/usr/bin/aarch64-linux-gnu-ar; \
     fi && \
     if [ "${TARGETPLATFORM}" = "linux/arm/v7" ]; then \
         RUSTTARGET=armv7-unknown-linux-gnueabihf; \
+        export TARGET_CC=/usr/bin/arm-linux-gnueabihf-gcc; \
+        export TARGET_AR=/usr/bin/arm-linux-gnueabihf-ar; \
+    fi && \
+    cargo build --all-features --bins --release --target=${RUSTTARGET} || \
+    if [ "${TARGETPLATFORM}" = "linux/amd64" ]; then \
+        apt-get install --assume-yes libssl1.1:amd64 libssl-dev:amd64; \
+    fi && \
+    if [ "${TARGETPLATFORM}" = "linux/arm64" ]; then \
+        apt-get install --assume-yes libssl1.1:arm64 libssl-dev:arm64; \
+    fi && \
+    if [ "${TARGETPLATFORM}" = "linux/arm/v7" ]; then \
+        apt-get install --assume-yes libssl1.1:armhf libssl-dev:armhf; \
     fi && \
     cargo build --all-features --bins --release --target=${RUSTTARGET}
+
 
 #############################################################################
 
