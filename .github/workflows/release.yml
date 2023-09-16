@@ -9,3 +9,6 @@ on:
 jobs:
   ghcrio:
     uses: Steffo99/.github/.github/workflows/buildrelease-docker.yml@main
+    with:
+      platforms: >-
+        linux/amd64
