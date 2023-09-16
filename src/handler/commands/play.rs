@@ -1,4 +1,3 @@
-use std::env;
 use std::ffi::OsString;
 use serenity::prelude::*;
 use serenity::model::prelude::*;
@@ -27,11 +26,7 @@ pub async fn play(ctx: &Context, guild: &GuildId, member: &Member, opts: Options
 		}
 		// play file
 		else if option_optional_string(&opts, "file").is_some() {
-			let dev_user_id: UserId = env::var("ANGY_DEV_USER_ID")
-				.map_err(|_| AngyError::Bot("`ANGY_DEV_USER_ID` is not set."))?
-				.parse::<u64>()
-				.map_err(|_| AngyError::Bot("`ANGY_DEV_USER_ID` is not a valid ID."))?
-				.into();
+			let dev_user_id: UserId = crate::config::DEV_USER_ID.clone();
 
 			match member.user.id.eq(&dev_user_id) {
 				false => Err(AngyError::User("This command can be used only by the bot's owner."))?,

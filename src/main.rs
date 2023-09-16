@@ -1,14 +1,4 @@
-//! # Angy Bot
-//!
-//! Music player bot for Discord supporting unusual formats and features, intended primarly for usage in the [RYG community](https://www.ryg.one/).
-//!
-//! ## Supported players
-//!
-//! Currently supports playing from:
-//! - local filesystem
-//! - yt-dlp
-//! - local Plex instance
-
+//! Main function of Angy Bot.
 
 mod schema;
 mod error;

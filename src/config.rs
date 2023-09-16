@@ -1,5 +1,6 @@
 use std::env;
 use lazy_static::lazy_static;
+use serenity::model::id::{UserId, GuildId};
 
 
 lazy_static! {
@@ -25,11 +26,25 @@ lazy_static! {
     pub static ref PLEX_LIBRARY: String = env::var("ANGY_PLEX_LIBRARY")
         .expect("ANGY_PLEX_LIBRARY to be set");
 
-    /// The string to remove from the media file path.
+    /// The string to remove from the media file path for Plex files.
     pub static ref PLEX_REPLACE_FROM: String = env::var("ANGY_PLEX_REPLACE_FROM")
         .expect("ANGY_PLEX_REPLACE_FROM to be set");
 
-    /// The string to add in the media file path.
+    /// The string to add in the media file path for Plex files.
     pub static ref PLEX_REPLACE_TO: String = env::var("ANGY_PLEX_REPLACE_TO")
         .expect("ANGY_PLEX_REPLACE_TO to be set");
+
+    /// The guild id to register Slash Commands in.
+    pub static ref DEV_GUILD_ID: GuildId = env::var("ANGY_DEV_GUILD_ID")
+        .expect("ANGY_DEV_GUILD_ID to be set")
+        .parse::<u64>()
+        .expect("ANGY_DEV_GUILD_ID to be a valid u64")
+        .into();
+
+    /// The user id allowed to use `/play file`.
+    pub static ref DEV_USER_ID: UserId = env::var("ANGY_DEV_USER_ID")
+        .expect("ANGY_DEV_USER_ID to be set")
+        .parse::<u64>()
+        .expect("ANGY_DEV_USER_ID to be a valid u64")
+        .into();
 }
