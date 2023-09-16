@@ -65,13 +65,13 @@ RUN \
     fi && \
     cargo build --all-features --bins --release --target=${RUSTTARGET} || \
     if [ "${TARGETPLATFORM}" = "linux/amd64" ]; then \
-        apt-get install --assume-yes libssl1.1:amd64 libssl-dev:amd64; \
+        apt-get install --assume-yes libssl1.1:amd64 libssl-dev:amd64 libopus-dev:amd64; \
     fi && \
     if [ "${TARGETPLATFORM}" = "linux/arm64" ]; then \
-        apt-get install --assume-yes libssl1.1:arm64 libssl-dev:arm64; \
+        apt-get install --assume-yes libssl1.1:arm64 libssl-dev:arm64 libopus-dev:arm64; \
     fi && \
     if [ "${TARGETPLATFORM}" = "linux/arm/v7" ]; then \
-        apt-get install --assume-yes libssl1.1:armhf libssl-dev:armhf; \
+        apt-get install --assume-yes libssl1.1:armhf libssl-dev:armhf libopus-dev:armhf; \
     fi && \
     cargo build --all-features --bins --release --target=${RUSTTARGET}
 
