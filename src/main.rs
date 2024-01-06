@@ -19,9 +19,9 @@ use songbird::SerenityInit;
 async fn main() {
     pretty_env_logger::init();
 
-    Client::builder(config::TOKEN.as_str(), GatewayIntents::non_privileged())
+    Client::builder(config::ANGY_TOKEN(), GatewayIntents::non_privileged())
         .event_handler(handler::AngyHandler)
-        .application_id(*config::APPID)
+        .application_id(*config::ANGY_APPID())
         .register_songbird()
         .await
         .expect("to be able to create the Discord client")

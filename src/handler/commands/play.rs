@@ -3,6 +3,7 @@ use serenity::prelude::*;
 use serenity::model::prelude::*;
 use crate::error::{AngyError, AngyResult};
 use crate::options::{option_required_string, option_optional_string, OptionsHashMap};
+use crate::config;
 
 
 pub async fn play(ctx: &Context, guild: &GuildId, member: &Member, opts: OptionsHashMap) -> AngyResult<String> {
@@ -26,23 +27,18 @@ pub async fn play(ctx: &Context, guild: &GuildId, member: &Member, opts: Options
 		}
 		// play file
 		else if option_optional_string(&opts, "file").is_some() {
-			let dev_user_id: UserId = crate::config::DEV_USER_ID.clone();
-
-			match member.user.id.eq(&dev_user_id) {
+			match member.user.id.eq(config::ANGY_DEV_USER_ID()) {
 				false => Err(AngyError::User("This command can be used only by the bot's owner."))?,
 				true => songbird::ffmpeg(OsString::from(what)).await.map_err(AngyError::Ytdl)?
 			}
 		}
 		// play plex
 		else if option_optional_string(&opts, "plex").is_some() {
-			let base_url = crate::config::PLEX_SERVER.clone();
-			let token = crate::config::PLEX_TOKEN.clone();
-			let library = crate::config::PLEX_LIBRARY.clone();
 			let client = reqwest::Client::new();
 
-			let response = client.get(format!("{base_url}/hubs/search/"))
+			let response = client.get(format!("{}/hubs/search/", config::ANGY_PLEX_SERVER()))
 				.query(&[
-					("X-Plex-Token", token),
+					("X-Plex-Token", config::ANGY_PLEX_TOKEN().to_owned()),
 					("query", what.to_string()),
 					("limit", "25".to_string()),
 					("includeCollections", "0".to_string()),
@@ -65,7 +61,7 @@ pub async fn play(ctx: &Context, guild: &GuildId, member: &Member, opts: Options
 				.next()
 				.ok_or(AngyError::PlexResponse("Could not find 'track' hub"))?;
 
-			let best_match: crate::plex::Metadata = track_hub.metadata.into_iter().filter_map(|metadata| match metadata.library_section_title == library {
+			let best_match: crate::plex::Metadata = track_hub.metadata.into_iter().filter_map(|metadata| match &metadata.library_section_title == config::ANGY_PLEX_LIBRARY() {
 				true => Some(metadata),
 				false => None,
 			})
@@ -78,9 +74,7 @@ pub async fn play(ctx: &Context, guild: &GuildId, member: &Member, opts: Options
 			let bm_part: crate::plex::Part = bm_media.part.into_iter().next()
 				.ok_or(AngyError::PlexResponse("No parts for the best match track."))?;
 
-			let from = crate::config::PLEX_REPLACE_FROM.clone();
-			let to = crate::config::PLEX_REPLACE_TO.clone();
-			let path = bm_part.file.replace(&from, &to);
+			let path = bm_part.file.replace(config::ANGY_PLEX_REPLACE_FROM(), config::ANGY_PLEX_REPLACE_TO());
 
 			log::trace!("Path is: {path:?}");
 

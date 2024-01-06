@@ -15,7 +15,7 @@ pub type OptionsHashMap = HashMap<String, CommandDataOptionValue>;
 
 
 pub fn options_vec(options: Vec<CommandDataOption>) -> Vec<(String, CommandDataOptionValue)> {
-    options.into_iter().map(|o| match o.resolved {
+    options.into_iter().flat_map(|o| match o.resolved {
         Some(oo) => {
             vec![(o.name, oo)]
         },
@@ -24,7 +24,7 @@ pub fn options_vec(options: Vec<CommandDataOption>) -> Vec<(String, CommandDataO
             vec.append(&mut options_vec(o.options));
             vec
         },
-    }).flatten().collect()
+    }).collect()
 }
 
 
